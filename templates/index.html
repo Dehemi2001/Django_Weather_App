@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Weather Detector</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <style>
+    body {
+      background: #f0f2f5;
+    }
+    .weather-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 32px 24px 24px 24px;
+      margin-top: 40px;
+      text-align: center;
+    }
+    .weather-icon {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+    .weather-title {
+      font-size: 2.2em;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .weather-desc {
+      font-size: 1.3em;
+      color: #555;
+      margin-bottom: 18px;
+      text-transform: capitalize;
+    }
+    .weather-details h5 {
+      margin: 8px 0;
+      font-weight: 400;
+      color: #333;
+    }
+    .navbar-custom {
+      background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);
+      color: white;
+      padding: 18px 0;
+      margin-bottom: 0;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .navbar-custom h1 {
+      margin: 0;
+      font-size: 2.5em;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .search-bar {
+      margin-top: 40px;
+      margin-bottom: 0;
+    }
+    .btn-search {
+      background: #4e54c8;
+      color: #fff;
+      border: none;
+    }
+    .btn-search:hover {
+      background: #8f94fb;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar-custom text-center">
+    <h1>Weather Detector</h1>
+  </nav>
+  <div class="container">
+    <div class="row search-bar">
+      <div class="col-md-6 col-md-offset-3">
+        <form action="" method="post" class="input-group">
+          {% csrf_token %}
+          <input type="text" class="form-control input-lg" name="city" placeholder="Enter city name..." required>
+          <span class="input-group-btn">
+            <button class="btn btn-search btn-lg" type="submit">
+              <i class="glyphicon glyphicon-search"></i>
+            </button>
+          </span>
+        </form>
+        {% if error_message %}
+          <div class="alert alert-danger" style="margin-top:15px;">
+            {{ error_message }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% if data.country_code %}
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="weather-card">
+          <div class="weather-title">{{ city }}</div>
+          {% if data.icon_url %}
+            <img src="{{ data.icon_url }}" alt="Weather icon" class="weather-icon" />
+          {% endif %}
+          {% if data.description %}
+            <div class="weather-desc">{{ data.description|capfirst }}</div>
+          {% endif %}
+          <div class="weather-details">
+            <h5><strong>Country Code:</strong> {{ data.country_code }}</h5>
+            <h5><strong>Coordinate:</strong> {{ data.coordinate }}</h5>
+            <h5><strong>Temperature:</strong> {{ data.temp }}</h5>
+            <h5><strong>Pressure:</strong> {{ data.pressure }}</h5>
+            <h5><strong>Humidity:</strong> {{ data.humidity }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</body>
+
+</html>
