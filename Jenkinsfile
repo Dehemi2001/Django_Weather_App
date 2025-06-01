@@ -15,7 +15,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'python -m venv $VENV_DIR'
-                sh './$VENV_DIR/Scripts/pip install --upgrade pip'
+                sh './$VENV_DIR/Scripts/python -m pip install --upgrade pip'
                 sh './$VENV_DIR/Scripts/pip install -r requirements.txt'
             }
         }
