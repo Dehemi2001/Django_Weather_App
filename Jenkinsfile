@@ -26,5 +26,3 @@ pipeline {
         }
     }
 }
-
-ALLOWED_HOSTS = ['*']
