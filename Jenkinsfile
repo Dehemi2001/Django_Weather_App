@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         VENV_DIR = 'venv'
+        IMAGE_NAME = 'weatherdetector:latest'
+        CONTAINER_NAME = 'weatherdetector_app'
     }
 
     stages {
@@ -23,9 +25,16 @@ pipeline {
                 bat '%VENV_DIR%\\Scripts\\python manage.py test'
             }
         }
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t %IMAGE_NAME% .'
+            }
+        }
         stage('Deploy') {
             steps {
-                bat '%VENV_DIR%\\Scripts\\python.exe manage.py runserver 0.0.0.0:8000'
+                bat 'docker stop %CONTAINER_NAME% || exit 0'
+                bat 'docker rm %CONTAINER_NAME% || exit 0'
+                bat 'docker run -d --name %CONTAINER_NAME% -p 8000:8000 %IMAGE_NAME%'
             }
         }
     }
